@@ -13,8 +13,8 @@ export class Tab1Page implements OnInit {
 
   ngOnInit() {
       this.newService.getTopHeadlines()
-      .subscribe( resp =>{
-        console.log(resp.articles);
+      .subscribe( articles =>{
+        console.log(articles);
       });
   }
 
