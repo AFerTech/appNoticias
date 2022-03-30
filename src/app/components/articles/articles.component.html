@@ -1,23 +1,11 @@
-<ion-grid>
+<ion-grid fixed>
   <ion-row>
-    <ion-col *ngFor="let article of articles; let i=index">
+    <ion-col *ngFor="let article of articles; let i=index" size="12" size-lg="3"
+              size-sm="6" size-md="4" size-xs="12">
 
-      <ion-card>
-        <ion-card-subtitle class="ion-margin">
-          <span class="text-primary">{{i+1}}. </span>
-          <span class="article-source-name">{{article.source.name}} </span>
+      <app-article [article]="article" [index]="i+1"></app-article>
 
-        </ion-card-subtitle>
-        <ion-card-title class="ion.padding-horizontal ion-margin-bottom">
-          {{article.title}}
-        </ion-card-title>
-        <ion-img  *ngIf="article.urlToImage" [src]="article.urlToImage">
-          
-        </ion-img>
-        <ion-card-content *ngIf="article.description">
-          <p>{{article.description}}</p>
-        </ion-card-content>
-      </ion-card>
+      
 
     </ion-col>
   </ion-row>
