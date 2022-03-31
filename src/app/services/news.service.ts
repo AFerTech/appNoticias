@@ -30,4 +30,16 @@ export class NewsService {
     );
 
   }
+
+  getTopHeadlinesByCategory(category:string): Observable<Article[]>{
+    return this.http.get<NewsResponse>(`https://newsapi.org/v2/everything?q=${category}`,{
+      params:{
+        apiKey: apiKey
+      }
+    }).pipe(
+      map(({articles})=> articles)
+    );
+
+
+  }
 }
