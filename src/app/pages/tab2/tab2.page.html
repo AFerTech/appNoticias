@@ -1,17 +1,24 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" mode="ios" class="ion-no-border">
   <ion-toolbar>
     <ion-title>
-      Tab 2
+      Encabezado
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <ion-header collapse="condense" mode="ios" class="ion-no-border">
     <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
+      <ion-title size="large">Encabezado</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <ion-segment value="pizza" (ionChange)="segmentChanged($event)"
+  scrolloable mode="ios">
+    <ion-segment-button value="pizza">
+      <ion-label>Pizza</ion-label>
+    </ion-segment-button>
+  </ion-segment> 
+
+  
 </ion-content>

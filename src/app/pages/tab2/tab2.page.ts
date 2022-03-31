@@ -9,4 +9,8 @@ export class Tab2Page {
 
   constructor() {}
 
+  segmentChanged( category: any){
+    console.log(category);
+  }
+
 }
