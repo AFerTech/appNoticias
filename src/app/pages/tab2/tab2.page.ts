@@ -22,11 +22,27 @@ export class Tab2Page implements OnInit {
     });
   }
 
-  segmentChanged( event: any){
-    this.selectedCategory = event.detail.value;
+  segmentChanged( event: Event){
+
+    this.selectedCategory = (event as CustomEvent).detail.value;
     this.newsService.getTopHeadlinesByCategory(this.selectedCategory).subscribe(articles =>{
       
       this.articles=[...articles]
+    })
+  }
+
+  loadData(event:any){
+    this.newsService.getTopHeadlinesByCategory(this.selectedCategory, true)
+    .subscribe( articles =>{
+
+
+      if (articles.length===this.articles.length){
+        event.target.disable= true;
+        return;
+      }
+      this.articles=articles;
+
+      event.target.complete();
     })
   }
 

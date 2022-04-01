@@ -24,5 +24,9 @@
 [articles]="articles">
 </app-articles>
 
+<ion-infinite-scroll threshold="25%" position="bottom" (ionInfinite)="loadData($event)">
+  <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando...">
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
   
 </ion-content>
