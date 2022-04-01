@@ -39,13 +39,15 @@ export class NewsService {
 
   getTopHeadlines():Observable<Article[]>{
 
-    return this.http.get<NewsResponse>(`https://newsapi.org/v2/everything?q=tesla&from=2022-02-28&sortBy`,{
-      params:{
-        apiKey: apiKey
-      }
-    }).pipe(
-      map(({articles})=> articles)
-    );
+    return this.getTopHeadlinesByCategory('business')
+
+    // return this.http.get<NewsResponse>(`https://newsapi.org/v2/everything?q=tesla&from=2022-02-28&sortBy`,{
+    //   params:{
+    //     apiKey: apiKey
+    //   }
+    // }).pipe(
+    //   map(({articles})=> articles)
+    // );
 
   }
 
@@ -76,7 +78,7 @@ export class NewsService {
   }
   const page= this.articlesByCategoryAndPage[category].page+1;
 
-  return this.executeQuery<NewsResponse>(`https://newsapi.org/v2/everything?q=${category}&page=${page}`)
+  return this.executeQuery<NewsResponse>(`/top-headlines?category=${category}&page=${page}`)
   .pipe(
     map( ({articles})=>{
 
