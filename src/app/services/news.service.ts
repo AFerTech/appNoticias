@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
 import { NewsResponse, Article,ArticlesByCategoryAndPage } from '../interfaces';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map  } from 'rxjs/operators';
 
 
@@ -49,12 +49,15 @@ export class NewsService {
 
   }
 
-  getTopHeadlinesByCategory (category:string, leadMore: boolean=false): Observable<Article[]>{
-    return this.executeQuery<NewsResponse>(`https://newsapi.org/v2/everything?q=${category}`,)
-    .pipe(
-      map(({articles})=> articles)
-    );
+  getTopHeadlinesByCategory (category:string, loadMore: boolean=false): Observable<Article[]>{
 
+    if (loadMore){
+      return this.getArticlesByCategory(category);
+    }
+    if (this.articlesByCategoryAndPage[category]){
+      return of (this.articlesByCategoryAndPage[category].articles);
+    }
+    return this.getArticlesByCategory(category);
 
   }
 
@@ -75,7 +78,17 @@ export class NewsService {
 
   return this.executeQuery<NewsResponse>(`https://newsapi.org/v2/everything?q=${category}&page=${page}`)
   .pipe(
-    map( ({articles})=> articles)
+    map( ({articles})=>{
+
+      if (articles.length===0) return this.articlesByCategoryAndPage[category].articles;
+
+      this.articlesByCategoryAndPage[category]={
+        page: page,
+        articles: [...this.articlesByCategoryAndPage[category].articles, ...articles]
+      }
+
+      return this.articlesByCategoryAndPage[category].articles;
+    })
     );
   
 }

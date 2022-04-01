@@ -13,22 +13,21 @@ export class Tab2Page implements OnInit {
   public selectedCategory: string=this.categories[0];
   public articles: Article[]=[];
   
-  constructor(private newsServiece:NewsService) {}
+  constructor(private newsService:NewsService) {}
 
   ngOnInit() {
-    this.newsServiece.getTopHeadlinesByCategory(this.selectedCategory).subscribe(articles =>{
+    this.newsService.getTopHeadlinesByCategory(this.selectedCategory).subscribe(articles =>{
      
-      this.articles=[...this.articles, ...articles]
+      this.articles=[...articles]
     });
   }
 
   segmentChanged( event: any){
     this.selectedCategory = event.detail.value;
-    console.log(event.detail.value);
-    this.newsServiece.getTopHeadlinesByCategory(this.selectedCategory).subscribe(articles =>{
+    this.newsService.getTopHeadlinesByCategory(this.selectedCategory).subscribe(articles =>{
       
       this.articles=[...articles]
-    });
+    })
   }
 
 }
