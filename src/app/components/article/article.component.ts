@@ -6,12 +6,13 @@ import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 
 import { browser } from 'protractor';
 import { ActionSheetButton, ActionSheetController, Platform } from '@ionic/angular';
+import { StorageService } from 'src/app/services/storage.service';
 
 
 @Component({
   selector: 'app-article',
   templateUrl: './article.component.html',
-  styleUrls: ['./article.component.scss'],
+  styleUrls: ['./article.component.scss',],
 })
 export class ArticleComponent  {
   @Input() article: Article;
@@ -21,7 +22,8 @@ export class ArticleComponent  {
     private appBrowser: InAppBrowser,
     private platform: Platform,
     private actionSheetCtrl: ActionSheetController,
-    private socialSharing: SocialSharing) { }
+    private socialSharing: SocialSharing,
+    private storageService: StorageService) { }
 
   openArticle(){
 
@@ -85,7 +87,7 @@ export class ArticleComponent  {
   }
 
   onToggleFavorite(){
-    console.log('toggle favorite');
+    this.storageService.saveRemoveArticle(this.article);
   }
   
 
