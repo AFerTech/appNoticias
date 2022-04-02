@@ -2,8 +2,10 @@ import { Component, Input } from '@angular/core';
 import { Article } from '../../interfaces';
 
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
+
 import { browser } from 'protractor';
-import { ActionSheetController, Platform } from '@ionic/angular';
+import { ActionSheetButton, ActionSheetController, Platform } from '@ionic/angular';
 
 
 @Component({
@@ -18,7 +20,8 @@ export class ArticleComponent  {
   constructor(
     private appBrowser: InAppBrowser,
     private platform: Platform,
-    private actionSheetCtrl: ActionSheetController,) { }
+    private actionSheetCtrl: ActionSheetController,
+    private socialSharing: SocialSharing) { }
 
   openArticle(){
 
@@ -33,33 +36,52 @@ export class ArticleComponent  {
 
    async onOpenMenu(){
 
+    const normalBts:  ActionSheetButton[]=[
+      {
+        text: 'Favorito',
+        icon: 'heart-outline',
+        handler: ()=> this.onToggleFavorite()
+      },
+      {
+        text: 'Cancelar',
+        icon: 'close-outline',
+        role: 'cancel'
+      }
+    ]
+
+    const shareBtn: ActionSheetButton={
+      text: 'Compartir',
+      icon: 'share-outline',
+      handler: ()=> this.onShareArticle()
+    };
+
+
+
+    if (this.platform.is('capacitor')){
+      normalBts.unshift(shareBtn);
+      
+
+    }
+
     const actionSheet= await this.actionSheetCtrl.create({
       header: 'Opciones',
-      buttons: [
-        {
-          text: 'Compartir',
-          icon: 'share-outline',
-          handler: ()=> this.onShareArticle()
-        },
-        {
-          text: 'Favorito',
-          icon: 'heart-outline',
-          handler: ()=> this.onToggleFavorite()
-        },
-        {
-          text: 'Cancelar',
-          icon: 'close-outline',
-          role: 'cancel'
-        }
-      ]
+      buttons: normalBts
     });
 
+    
     await actionSheet.present();
 
   }
 
   onShareArticle(){
-    console.log('share article');
+    const {title, source, url}= this.article;
+
+    this.socialSharing.share(
+      title,
+      source.name,
+      null,
+      url
+    );
   }
 
   onToggleFavorite(){
